@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Loading...</title>
+
+    <!-- Telegram Mini App API -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+
+<body style="
+    background-color: #f0f2f5;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    padding: 40px;
+">
+
+    <!-- What unauthorized users see -->
+    <div id="access-denied" style="display: none;">
+
+        <h1 style="color: red;">
+            Access Denied
+        </h1>
+
+        <p>
+            This is a private bot.
+            You do not have permission to access this Mini App.
+        </p>
+
+        <p style="margin-top: 20px; color: gray;">
+            Your Telegram ID is:
+            <span id="stranger-id"></span>
+        </p>
+
+    </div>
+
+
+    <!-- Loading screen -->
+    <div id="loading">
+
+        <h2>Loading...</h2>
+
+        <p>
+            Please wait.
+        </p>
+
+    </div>
+
+
+    <script>
+
+        /*
+        =====================================================
+        CHANGE #1 — PUT YOUR TELEGRAM USER IDs HERE
+        =====================================================
+
+        Replace the example numbers below with the Telegram
+        user IDs that you want to allow into the Mini App.
+
+        Example:
+
+        const ALLOWED_USERS = [
+        8798835096
+            987654321
+        ];
+
+        You can put multiple IDs separated by commas.
+        */
+
+        const ALLOWED_USERS = [
+            8798835096,     // ← CHANGE THIS
+            987654321      // ← CHANGE THIS
+        ];
+
+
+        /*
+        =====================================================
+        CHANGE #2 — PUT YOUR DESTINATION WEBSITE HERE
+        =====================================================
+
+        This is where an authorized user will be sent.
+
+        For testing, leave it as example.com.
+
+        Later you can change it to the website you want.
+        */
+
+        const DESTINATION_URL = "https://example.com/";
+
+
+        /*
+        =====================================================
+        DO NOT CHANGE BELOW THIS LINE
+        =====================================================
+        */
+
+        // Connect to Telegram
+        const tg = window.Telegram.WebApp;
+
+        // Tell Telegram the Mini App is ready
+        tg.ready();
+
+        // Get the Telegram user's ID
+        const userId = tg.initDataUnsafe?.user?.id;
+
+
+        // Check whether the user is authorized
+        if (ALLOWED_USERS.includes(userId)) {
+
+            // Authorized user
+            window.location.href = DESTINATION_URL;
+
+        } else {
+
+            // Hide loading screen
+            document.getElementById("loading").style.display = "none";
+
+            // Show access denied
+            document.getElementById("access-denied").style.display = "block";
+
+            // Display the unauthorized us■・er's Telegram ID
+            document.getElementById("stranger-id").textContent =
+                userId || "Unable to identify user";
+        }
+
+    </script>
+
+</body>
+</html>
